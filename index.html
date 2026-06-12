@@ -27,7 +27,10 @@
                 <button id="menu-bar" class="md:hidden cursor-pointer">
                     <i class="fa-solid fa-bars"></i>
                 </button>
-                <button class="text-orange-300 cursor-pointer"><i class="fa-solid fa-cart-shopping"></i></button>
+                <button class="text-orange-300 cursor-pointer"><i class="fa-solid fa-cart-shopping text-2xl relative">
+                    <span class="absolute -top-3 -right-2 bg-black text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </i>
+                </button>
             </div>
         </div>
     </div>
@@ -41,6 +44,22 @@
         </ul>
         <i class="fa-solid fa-xmark absolute top-4 right-4 cursor-pointer" id="close-menu"></i>
     </nav>
+
+    <!-- Hero Section -->
+
+    <section>
+        <div class="flex flex-col md:flex-row items-center justify-between p-8 gap-8 bg-amber-50">
+            <div class="md:w-1/2">
+                <h2 class="text-3xl text-center font-[inter] font-bold mb-4">Welcome to Alhaja Puff-Puff Hub</h2>
+                <p class="text-md font-[poppins] text-amber-900 mb-6">Indulge in the irresistible taste of our freshly made puff-puffs, crafted with love and the finest ingredients. Whether you're craving a sweet treat or a savory delight, we have something for everyone. Join us and experience the ultimate puff-puff satisfaction!</p>
+                <button class="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors duration-300 cursor-pointer">Order Now</button>
+                <button class="bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors duration-300 cursor-pointer">View Menu</button>
+            </div>
+            <div class="md:w-1/2">
+                <img src="images/puff-puff1.png" alt="Puff-Puff Image" class="w-full rounded-lg shadow-md">
+            </div>
+        </div>
+    </section>
   </body>
   <script type="module" src="scripts/header.js"></script>
 </html>
