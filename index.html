@@ -10,17 +10,42 @@
   <body>
     <header>
         <div class="flex items-center justify-between p-4 border-b border-gray-200">
-            <div class="">
-                <h1 class="font-serif sm:text-xs md:text-sm lg:text-lg font-bold text-orange-500"><span class="font-[poppins] text-3xl">A</span>lhaja puff-puff hub</h1>
-            </div>
+            <h1 class="font-serif sm:text-xs md:text-sm lg:text-lg font-bold text-orange-500"><span class="font-[poppins] text-3xl">A</span>lhaja puff-puff hub</h1>
             <!-- Desktop Nav -->
             <div class="flex items-center gap-4">
                 <nav id="nav-bar" class="hidden md:block">
                     <ul class="flex font-light gap-4">
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Menu</a></li>
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Contact Us</a></li>
+                        <li class="hover:text-orange-500"><a href="#">Home</a></li>
+                        <li class="relative group">
+                            <button class=" hover:text-orange-500 transition-colors duration-300">
+                                Menu
+                            </button>
+
+                            <div class="absolute left-0 mt-3 w-52 backdrop-blur-md rounded-lg shadow-lg opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300">
+
+                                <a href="#puff-puff"
+                                    class="block px-4 py-3 hover:bg-orange-100 rounded-t-lg">
+                                    Puff-Puff
+                                </a>
+
+                                <a href="#eggroll"
+                                    class="block px-4 py-3 hover:bg-orange-100">
+                                    Egg Roll
+                                </a>
+
+                                <a href="#akara"
+                                    class="block px-4 py-3 hover:bg-orange-100">
+                                    Akara
+                                </a>
+
+                                <a href="#buns"
+                                    class="block px-4 py-3 hover:bg-orange-100 rounded-b-lg">
+                                    Buns
+                                </a>
+                            </div>
+                        </li>
+                        <li class="hover:text-orange-500"><a href="#">About Us</a></li>
+                        <li class="hover:text-orange-500"><a href="#">Contact Us</a></li>
                     </ul>
                 </nav>
                 <div class="gap-4 flex items-center">
