@@ -8,47 +8,64 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   </head>
   <body>
-    <div class="flex items-center justify-between p-4 border-b border-gray-200">
-        <div class="">
-            <h1 class="font-serif sm:text-xs md:text-sm lg:text-lg font-bold text-orange-500"><span class="font-[poppins] text-3xl">A</span>lhaja puff-puff hub</h1>
-        </div>
-
-        <!-- Desktop Nav -->
-        <div class="flex items-center gap-4">
-            <nav id="nav-bar" class="hidden md:block">
-                <ul class="flex font-light gap-4">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Menu</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                </ul>
-            </nav>
-            <div class="gap-4 flex items-center">
-                <button id="menu-bar" class="md:hidden cursor-pointer">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
-                <button id="cart-button" class="text-orange-300 cursor-pointer"><i class="fa-solid fa-cart-shopping text-2xl relative">
-                    <span class="absolute -top-3 -right-2 bg-black text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
-                </i>
-                </button>
-                <div id="cart" class="fixed top-0 right-0 w-full md:w-1/2 h-screen bg-white shadow-sm p-4 translate-x-full transition-transform duration-500 ease-in-out z-40 rounded-l-sm">
-                    <h2 class="text-2xl font-bold font-[inter] mb-4">Your Cart</h2>
-                    <p class="text-md font-[poppins] text-gray-900">Your cart is currently empty.</p>
-                    <i class="fa-solid fa-xmark absolute top-4 right-4 cursor-pointer close-btn"></i>
+    <header>
+        <div class="flex items-center justify-between p-4 border-b border-gray-200">
+            <div class="">
+                <h1 class="font-serif sm:text-xs md:text-sm lg:text-lg font-bold text-orange-500"><span class="font-[poppins] text-3xl">A</span>lhaja puff-puff hub</h1>
+            </div>
+            <!-- Desktop Nav -->
+            <div class="flex items-center gap-4">
+                <nav id="nav-bar" class="hidden md:block">
+                    <ul class="flex font-light gap-4">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Menu</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </nav>
+                <div class="gap-4 flex items-center">
+                    <button id="menu-bar" class="md:hidden cursor-pointer">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <button id="cart-button" class="text-orange-300 cursor-pointer"><i class="fa-solid fa-cart-shopping text-2xl hover:text-orange-500 transition-colors duration-300 relative">
+                        <span class="absolute -top-3 -right-2 bg-black text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                    </i>
+                    </button>
+                    <div id="cart" class="fixed top-0 right-0 w-full md:w-1/2 h-screen bg-amber-50 shadow-sm p-4 translate-x-full transition-transform duration-500 ease-in-out z-40 rounded-l-sm text-center">
+                        <h2 class="text-2xl font-bold font-[inter] mb-4">Your Cart</h2>
+                        <h1 class="text-2xl text-center font-bold text-gray-900 mb-4">Oops!</h1>
+                        <span class="text-5xl">&#128546;</span>
+                        <p class="text-3xl font-bold font-[poppins] text-gray-900">Your cart is currently empty.</p>
+                        <button class="bg-orange-500 text-white font-medium px-4 py-2 rounded-full hover:bg-orange-600 transition-colors duration-300 cursor-pointer">Order Now</button>
+                        <i class="fa-solid fa-xmark absolute top-4 right-4 cursor-pointer close-btn"></i>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Mobile Nav -->
-    <nav id="nav-bar1" class="fixed top-0 right-0 w-64 h-screen backdrop-blur-md shadow-md px-2 transition-transform translate-x-full duration-500 ease-in-out z-40 rounded-l-2xl">
-        <ul class="flex flex-col font-semibold text-lg gap-4 pt-16 space-y-2">
-            <li class="hover:bg-orange-300 p-1.5 rounded-sm transition-all duration-500 hover:scale-105"><a href="#">Home</a></li>
-            <li class="hover:bg-orange-300 p-1.5 rounded-sm transition-all duration-500 hover:scale-105"><a href="#">Menu</a></li>
-            <li class="hover:bg-orange-300 p-1.5 rounded-sm transition-all duration-500 hover:scale-105"><a href="#">About</a></li>
-            <li class="hover:bg-orange-300 p-1.5 rounded-sm transition-all duration-500 hover:scale-105"><a href="#">Contact</a></li>
-        </ul>
-        <i class="fa-solid fa-xmark absolute top-4 right-4 cursor-pointer close-btn"></i>
-    </nav>
+        <!-- Mobile Nav -->
+        <nav id="nav-bar1" class="fixed top-0 right-0 w-64 h-screen backdrop-blur-md shadow-md px-2 transition-transform translate-x-full duration-500 ease-in-out z-40 rounded-l-2xl">
+            <ul class="flex flex-col font-semibold text-lg gap-4 pt-16 space-y-2">
+                <a href="#">
+                    <li class="hover:bg-orange-300 p-1.5 rounded-sm transition-all duration-500 hover:scale-105">Home</li>
+                </a>
+                <div class="relative">
+                    <li id="menu-link" class="flex justify-between items-center cursor-pointer hover:bg-orange-300 p-1.5 rounded-sm transition-all duration-500 hover:scale-105">
+                        <span>Menu</span>
+                        <i id="arrow" class="fa-solid fa-angle-down ml-30 transition-transform duration-500"></i>
+                    </li>
+                    <div id="dropdown" class="max-h-0 overflow-hidden flex flex-col gap-1 bg-transparent pl-4 transition-all duration-500 ease-in-out">
+                        <a href="#" class="hover:bg-orange-300 p-1.5 rounded-sm transition-all duration-500 hover:scale-105">Puff-Puff</a>
+                        <a href="#" class="hover:bg-orange-300 p-1.5 rounded-sm transition-all duration-500 hover:scale-105">Buns</a>
+                        <a href="#" class="hover:bg-orange-300 p-1.5 rounded-sm transition-all duration-500 hover:scale-105">Eggrolls</a>
+                        <a href="#" class="hover:bg-orange-300 p-1.5 rounded-sm transition-all duration-500 hover:scale-105">Akara</a>
+                    </div>
+                </div>
+                <li class="hover:bg-orange-300 p-1.5 rounded-sm transition-all duration-500 hover:scale-105"><a href="#">About</a></li>
+                <li class="hover:bg-orange-300 p-1.5 rounded-sm transition-all duration-500 hover:scale-105"><a href="#">Contact</a></li>
+            </ul>
+            <i class="fa-solid fa-xmark absolute top-4 right-4 cursor-pointer close-btn"></i>
+        </nav>
+    </header>
 
     <!-- Hero Section -->
 
