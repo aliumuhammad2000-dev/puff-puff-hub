@@ -17,11 +17,12 @@
                     <ul class="flex font-light gap-4">
                         <li class="hover:text-orange-500"><a href="#">Home</a></li>
                         <li class="relative group">
-                            <button class=" hover:text-orange-500 transition-colors duration-300">
+                            <button class="flex items-center gap-2 hover:text-orange-500 transition-colors duration-300">
                                 Menu
+                                <i class="fa-solid fa-angle-down transition-transform duration-300 group-hover:rotate-180"></i>
                             </button>
 
-                            <div class="absolute left-0 mt-3 w-52 backdrop-blur-md rounded-lg shadow-lg opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300">
+                            <div class="absolute left-0 mt-3 w-52 bg-white rounded-lg shadow-lg opacity-0 invisible translate-y-2 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-300">
 
                                 <a href="#puff-puff"
                                     class="block px-4 py-3 hover:bg-orange-100 rounded-t-lg">
@@ -96,9 +97,14 @@
 
     <section>
         <div class="flex flex-col md:flex-row items-center justify-between p-8 gap-8 bg-amber-50">
-            <div class="md:w-1/2">
-                <h2 class="text-3xl text-center font-[inter] font-bold mb-4">Welcome to Alhaja Puff-Puff Hub</h2>
-                <p class="text-md font-[poppins] text-amber-900 mb-6">Indulge in the irresistible taste of our freshly made puff-puffs, crafted with love and the finest ingredients. Whether you're craving a sweet treat or a savory delight, we have something for everyone. Join us and experience the ultimate puff-puff satisfaction!</p>
+            <div class="md:w-1/3 text-left">
+                <h4 class="text-lg text-orange-400 font-[inter] font-bold mb-4">FRESH. HOT. DELICIOUS.</h4>
+                <span class="block text-5xl font-bold text-orange-900 mb-2">Puff-Puff</span>
+                <p class="text-2xl font-bold text-orange-500 mb-6 capitalize">
+                    Made with love 
+                    <i class="fa-regular fa-heart"></i>
+                </p>
+                <p class="text-md font-[poppins] text-amber-900 mb-6 tracking-tight leading-relaxed">Crispy on the outside, fluffy on the inside, our puff-puff are a delightful treat for everyone. Order now and enjoy the taste you love!</p>
                 <button class="bg-orange-500 text-white font-medium px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors duration-300 cursor-pointer">Get Started</button>
             </div>
             <div class="md:w-1/2">
@@ -107,12 +113,62 @@
         </div>
     </section>
 
-    <!-- Your Orders-->
+    <section>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
+            <div class="flex items-start gap-4 bg-white rounded-xl shadow-md p-5
+            hover:-translate-y-1 hover:shadow-lg transition duration-300">
+                <div class="w-12 h-12 flex items-center justify-center bg-orange-100 rounded-full shrink-0">
+                    <i class="fa-solid fa-motorcycle text-orange-500 text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-900">Fast Delivery</h3>
+                    <p class="text-sm text-gray-600 mt-1">
+                        We deliver fresh puff puff straight to your doorstep.
+                    </p>
+                </div>
+            </div>
+            <div class="flex items-start gap-4 bg-white rounded-xl shadow-md p-5 hover:-translate-y-1 hover:shadow-lg transition duration-300">
+                <div class="w-12 h-12 flex items-center justify-center bg-orange-100 rounded-full shrink-0">
+                    <i class="fa-solid fa-shield text-orange-500 text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-900">Fresh & Tasty</h3>
+                    <p class="text-sm text-gray-600 mt-1">
+                        Made with fresh ingredients every single day.
+                    </p>
+                </div>
+            </div>
+            <div class="flex items-start gap-4 bg-white rounded-xl shadow-md p-5 hover:-translate-y-1 hover:shadow-lg transition duration-300">
+                <div class="w-12 h-12 flex items-center justify-center bg-orange-100 rounded-full shrink-0">
+                    <i class="fa-solid fa-heart text-orange-500 text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-900">Made with Love</h3>
+                    <p class="text-sm text-gray-600 mt-1">
+                        Every bite is freshly prepared with care.
+                    </p>
+                </div>
+            </div>
+            <div class="flex items-start gap-4 bg-white rounded-xl shadow-md p-5 hover:-translate-y-1 hover:shadow-lg transition duration-300">
+                <div class="w-12 h-12 flex items-center justify-center bg-orange-100 rounded-full shrink-0">
+                    <i class="fa-solid fa-credit-card text-orange-500 text-xl"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-gray-900">Secure Payment</h3>
+                    <p class="text-sm text-gray-600 mt-1">
+                        Safe and secure online payment options.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Menu-->
      <section>
         <div class="flex items-center justify-center gap-3 p-4">
             <div class="w-12 h-1 bg-orange-500 rounded"></div>
                 <h2 class="text-center text-2xl font-bold font-[inter] text-gray-900">
-                    Create Your Order
+                    Our Menu
                 </h2>
             <div class="w-12 h-1 bg-orange-500 rounded"></div>
         </div>
