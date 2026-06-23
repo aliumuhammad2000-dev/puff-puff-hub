@@ -37,31 +37,30 @@ const heroTitle = document.getElementById("title");
 const heroLoveMessage = document.getElementById("love-message");
 const heroDescription = document.getElementById("description");
 
+const elements = [
+    heroImage,
+    heroSubtitle,
+    heroTitle,
+    heroLoveMessage,
+    heroDescription
+];
+
 function showSlides() {
 
-    heroImage.classList.add("opacity-0");
-    heroSubtitle.classList.add("opacity-0");
-    heroTitle.classList.add("opacity-0");
-    heroLoveMessage.classList.add("opacity-0");
-    heroDescription.classList.add("opacity-0");
+    elements.forEach(el => el.classList.add("opacity-0"));
 
     setTimeout(() => {
 
-        current++; 
-        if(current >= slides.length){ current = 0; }
+        current = (current + 1) % slides.length;
 
         heroImage.src = slides[current].image;
         heroSubtitle.textContent = slides[current].subtitle;
         heroTitle.textContent = slides[current].title;
-        heroLoveMessage.innerHTML = `${slides[current].loveMessage} <i class="fa-regular fa-heart"></i>`;
+        heroLoveMessage.innerHTML =
+            `${slides[current].loveMessage} <i class="fa-regular fa-heart"></i>`;
         heroDescription.textContent = slides[current].description;
 
-        // Fade IN together
-        heroImage.classList.remove("opacity-0");
-        heroSubtitle.classList.remove("opacity-0");
-        heroTitle.classList.remove("opacity-0");
-        heroLoveMessage.classList.remove("opacity-0");
-        heroDescription.classList.remove("opacity-0");
+        elements.forEach(el => el.classList.remove("opacity-0"));
 
     }, 500);
 }
@@ -72,4 +71,21 @@ heroTitle.textContent = slides[0].title;
 heroLoveMessage.innerHTML = `${slides[0].loveMessage} <i class="fa-regular fa-heart"></i>`;
 heroDescription.textContent = slides[0].description;
 
-setInterval(showSlides, 5000);
+
+const heroSlider = document.getElementById("hero-slider");
+
+let slideInterval;
+
+function startSlider() {
+    clearInterval(slideInterval);
+    slideInterval = setInterval(showSlides, 5000);
+}
+
+function stopSlider() {
+    clearInterval(slideInterval);
+}
+
+heroSlider.addEventListener("mouseenter", stopSlider);
+heroSlider.addEventListener("mouseleave", startSlider);
+
+startSlider();
