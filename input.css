@@ -1,1 +1,5 @@
 @import "tailwindcss";
+
+.font-pacifico {
+    font-family: "Pacifico", cursive;
+}
