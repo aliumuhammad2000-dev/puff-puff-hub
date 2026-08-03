@@ -1,6 +1,6 @@
 const slides = [
     {
-        image: 'images/puff-puff1.png',
+        image: 'images/dough.png',
         subtitle: 'HOT. FRESH. DELICIOUS.',
         title: 'Puff-Puff',
         loveMessage: 'Made With Love',
@@ -89,3 +89,8 @@ heroSlider.addEventListener("mouseenter", stopSlider);
 heroSlider.addEventListener("mouseleave", startSlider);
 
 startSlider();
+
+const orderNowBtn = document.getElementById("order-now-btn");
+orderNowBtn.addEventListener("click", () => {
+    window.location.href = "combo.html";
+});
