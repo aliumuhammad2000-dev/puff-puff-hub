@@ -3,37 +3,37 @@ export const products = [
         id: "puff-puff",
         name: "Puff-Puff",
         image: "./images/dough.png",
-        price: 1000,
-        unit: "10pcs",
+        price: 50,
+        unit: "1pcs",
         category: "snack",
-        defaultQuantity: 10
+        quantity: 0
     },
     {
         id: "buns",
         name: "Buns",
         image: "./images/buns.png",
-        price: 1000,
-        unit: "10pcs",
+        price: 50,
+        unit: "1pcs",
         category: "snack",
-        defaultQuantity: 10
+        quantity: 0
     },
     {
         id: "akara",
         name: "Akara",
         image: "./images/akara.png",
-        price: 1000,
-        unit: "10pcs",
+        price: 100,
+        unit: "1pcs",
         category: "snack",
-        defaultQuantity: 10
+        quantity: 0
     },
     {
         id: "egg-roll",
         name: "Egg Roll",
         image: "./images/eggroll.png",
-        price: 1000,
-        unit: "10pcs",
+        price: 50,
+        unit: "1pcs",
         category: "snack",
-        defaultQuantity: 10
+        quantity: 0
     },
     {
         id: "american-cola",
@@ -42,7 +42,7 @@ export const products = [
         price: 500,
         unit: "1 bottle",
         category: "drink",
-        defaultQuantity: 1
+        quantity: 0
     },
     {
         id: "maltina",
@@ -51,7 +51,7 @@ export const products = [
         price: 600,
         unit: "1 bottle",
         category: "drink",
-        defaultQuantity: 1
+        quantity: 0
     },
     {
         id: "7up",
@@ -60,7 +60,7 @@ export const products = [
         price: 500,
         unit: "1 bottle",
         category: "drink",
-        defaultQuantity: 1
+        quantity: 0
     },
     {
         id: "bigi-cola",
@@ -69,7 +69,7 @@ export const products = [
         price: 500,
         unit: "1 bottle",
         category: "drink",
-        defaultQuantity: 1
+        quantity: 0
     },
     {
         id: "fanta",
@@ -78,7 +78,7 @@ export const products = [
         price: 500,
         unit: "1 bottle",
         category: "drink",
-        defaultQuantity: 1
+        quantity: 0
     },
     {
         id: "coca-cola",
@@ -87,6 +87,6 @@ export const products = [
         price: 500,
         unit: "1 bottle",
         category: "drink",
-        defaultQuantity: 1
+        quantity: 0
     }
 ];

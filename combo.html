@@ -51,7 +51,7 @@
                 </div>
                 <div id="products-container" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-5 md:gap-8 mt-4">
                 </div>
-                <div class="gridgrid-cols-2 border border-orange-200 rounded-2xl bg-orange-100 p-2 mt-4">
+                <div class="grid grid-cols-2 items-center justify-center border border-orange-200 rounded-2xl bg-orange-100 p-2 mt-4">
                     <div class="flex items-center gap-2">
                         <i class="fa-solid fa-gift text-2xl text-orange-500"></i>
                         <div class="text-xs">
@@ -76,58 +76,20 @@
                     <i class="fa-solid fa-box text-xl text-orange-500"></i>
                     <h2 class="text-lg font-bold">Your Combo Cart</h2>
                 </div>
-                <div class="space-y-3">
-                    <div class="rounded-2xl border border-orange-200 p-3">
-                        <div class="flex items-start gap-3">
-                            <img src="images/buns.png"
-                                class="w-16 h-16 rounded-full object-contain"
-                                alt="">
-                            <div class="flex-1">
-                                <div class="flex justify-between items-center">
-                                    <h5 class="font-semibold text-sm">
-                                        Buns
-                                    </h5>
-                                    <button>
-                                        <i class="fa-solid fa-xmark text-gray-400 hover:text-red-500"></i>
-                                    </button>
-                                </div>
-                                <p class="text-sm text-gray-500">
-                                    ₦1000
-                                </p>
-                                <div class="flex justify-between items-center mt-3">
-                                    <div class="flex items-center border rounded-lg overflow-hidden">
-                                        <button
-                                            class="decrease w-8 h-8 border-r text-orange-500 hover:bg-orange-500 hover:text-white">
-                                            -
-                                        </button>
-                                        <span class="quantity w-10 text-center font-semibold">
-                                            10
-                                        </span>
-                                        <button
-                                            class="increase w-8 h-8 border-l text-orange-500 hover:bg-orange-500 hover:text-white">
-                                            +
-                                        </button>
-                                    </div>
-                                    <span class="font-bold">
-                                        ₦1000
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div  id="combo-cart-item" class="space-y-3">
                 </div>
                 <div class="border-t mt-5 pt-4 space-y-2">
                     <div class="flex justify-between text-sm">
                         <span>Subtotal</span>
-                        <span>₦1000</span>
+                        <span id="subtotal">&#8358;0</span>
                     </div>
                     <div class="flex justify-between text-sm">
                         <span>Delivery Fee</span>
-                        <span>₦500</span>
+                        <span id="delivery-fee">&#8358;500</span>
                     </div>
                     <div class="flex justify-between text-lg font-bold pt-2">
                         <span>Total</span>
-                        <span class="text-orange-500">₦500</span>
+                        <span id="total" class="text-orange-500">&#8358;0</span>
                     </div>
                     <button
                         class="w-full mt-4 bg-orange-500 text-white py-3 rounded-xl font-semibold hover:bg-orange-600 transition">
@@ -144,4 +106,5 @@
     </div>
 </body>
 <script type="module" src="scripts/combo.js"></script>
+<script type="module" src="scripts/cartcombo.js"></script>
 </html>

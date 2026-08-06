@@ -6,6 +6,7 @@ const cart = document.querySelector("#cart");
 const menuLink = document.querySelector("#menu-link");
 const dropdown = document.querySelector("#dropdown");
 const arrow = document.querySelector("#arrow");
+const cartOrderBtn = document.getElementById('cart-order-now-btn')
 
 menuBar.addEventListener("click", () => {
     navBar.classList.remove("translate-x-full");
@@ -26,6 +27,10 @@ menuLink.addEventListener("click", () => {
         dropdown.classList.add("max-h-0");
     }
 });
+
+cartOrderBtn.addEventListener("click", () => {
+    window.location.href = 'combo.html';
+})
 
 closeBtn.forEach((btn) => {
     btn.addEventListener("click", () => {
