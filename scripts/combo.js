@@ -9,9 +9,14 @@ goBackBtn.addEventListener("click", () => {
 
 const productsContainer = document.getElementById("products-container");
 
-products.forEach((product) => {
-    productsContainer.innerHTML += `
-    <div class="bg-white rounded-2xl p-3 sm:p-4 flex flex-col items-center shadow-sm">
+renderProducts(products);
+
+function renderProducts(productsToRender) {
+    productsContainer.innerHTML = "";
+
+    productsToRender.forEach(product => {
+        productsContainer.innerHTML += `
+        <div class="bg-white rounded-2xl p-3 sm:p-4 flex flex-col items-center shadow-sm">
             <img src="${product.image}" alt="${product.name}"
                 class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 object-contain rounded-full">
             <h5 class="text-sm sm:text-base md:text-lg font-semibold mt-2">
@@ -37,48 +42,65 @@ products.forEach((product) => {
             </div>
         </div>
         `;
-        
-    }
-);
-
-
-document.querySelectorAll('.increase').forEach((button) => {
-    button.addEventListener('click', () => {
-        const id = button.dataset.id;
-        const quantityElement = document.querySelector(`.quantity[data-id="${id}"]`
-        );
-
-        const product = products.find(product => product.id === id)
-
-        let quantity = Number(quantityElement.textContent);
-        if (product.category === "snack") {
-            quantity += 2
-        }else {
-            quantity += 1
-        }
-
-        quantityElement.textContent = quantity;
-        updateCartCombo(id, quantity);
     });
-});
+    updateQuantity();
+}
 
-document.querySelectorAll('.decrease').forEach((button) => {
-    button.addEventListener('click', () => {
-        const id = button.dataset.id;
-        const quantityElement = document.querySelector(`.quantity[data-id="${id}"]`
-        );
+document.querySelectorAll('.filter-btn').forEach(button => {
+    button.addEventListener("click", () => {
+        const category = button.dataset.category;
 
-        const product = products.find(product => product.id === id);
-
-        let quantity = Number(quantityElement.textContent);
-        if (product.category === "snack") {
-            quantity = Math.max(0, quantity - 2)
+        if (category === "all") {
+            renderProducts(products);
         }else {
-            quantity = Math.max(0, quantity - 1)
+            const filteredProducts = products.filter(product => product.category === category);
+            renderProducts(filteredProducts);
         }
+    })
+    updateQuantity();
+})
 
-        quantityElement.textContent = quantity;
-        updateCartCombo(id, quantity);
+
+function updateQuantity() {
+
+    document.querySelectorAll('.increase').forEach((button) => {
+        button.addEventListener('click', () => {
+            const id = button.dataset.id;
+            const quantityElement = document.querySelector(`.quantity[data-id="${id}"]`
+            );
+    
+            const product = products.find(product => product.id === id)
+    
+            let quantity = Number(quantityElement.textContent);
+            if (product.category === "snack") {
+                quantity += 2
+            }else {
+                quantity += 1
+            }
+    
+            quantityElement.textContent = quantity;
+            updateCartCombo(id, quantity);
+        });
     });
-});
+    
+    document.querySelectorAll('.decrease').forEach((button) => {
+        button.addEventListener('click', () => {
+            const id = button.dataset.id;
+            const quantityElement = document.querySelector(`.quantity[data-id="${id}"]`
+            );
+    
+            const product = products.find(product => product.id === id);
+    
+            let quantity = Number(quantityElement.textContent);
+            if (product.category === "snack") {
+                quantity = Math.max(0, quantity - 2)
+            }else {
+                quantity = Math.max(0, quantity - 1)
+            }
+    
+            quantityElement.textContent = quantity;
+            updateCartCombo(id, quantity);
+        });
+    });
+}
 
