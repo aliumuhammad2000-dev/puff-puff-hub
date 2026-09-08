@@ -8,40 +8,44 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body class="bg-linear-to-r from-0% to-100% from-amber-50 via-orange-50 to-amber-100 p-8">
-    <button id="go-back-btn" class="bg-orange-500 text-white font-medium px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors duration-300 cursor-pointer">
-        <i class="fa-solid fa-arrow-left"></i> Go Back Home
-    </button>
-    <span class="block text-sm font-pacifico text-orange-500 m-2 pl-8 font-bold">Special Order</span>
-    <div class="relative flex items-center justify-around">
-            <div class="w-1/2">
-                <h2 class="text-left text-2xl md:text-7xl font-extrabold font-[poppins] capitalize">
-                    create your<br>perfect <span class="text-5xl font-pacifico text-orange-500">combo</span>
-                </h2>
-                <p class="text-xs mt-2 md:text-lg text-gray-500">
-                    Combine your perfect combo with our delicious options, to create your perfect box.
-                </p>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                    <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-bowl-food text-2xl text-orange-500"></i>
-                        <span class="text-[12px] text-gray-500 tracking-tighter">Perfect for any occasion!</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <i class="fa-regular fa-star text-2xl text-orange-500"></i>
-                        <span class="text-[12px] text-gray-500 tracking-tighter">Highly Rated!</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <i class="fa-solid fa-truck-fast text-2xl text-orange-500"></i>
-                        <span class="text-[12px] text-gray-500 tracking-tighter">Fast and Fresh Delivery!</span>
+    <header>
+        <button id="go-back-btn" class="bg-orange-500 text-white font-medium px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors duration-300 cursor-pointer">
+            <i class="fa-solid fa-arrow-left"></i> Go Back Home
+        </button>
+        <span class="block text-sm font-pacifico text-orange-500 m-2 pl-8 font-bold">Special Order</span>
+        <div class="relative flex items-center justify-around">
+                <div class="w-1/2">
+                    <h2 class="text-left text-2xl md:text-7xl font-extrabold font-[poppins] capitalize">
+                        create your<br>perfect <span class="text-5xl font-pacifico text-orange-500">combo</span>
+                    </h2>
+                    <p class="text-xs mt-2 md:text-lg text-gray-500">
+                        Combine your perfect combo with our delicious options, to create your perfect box.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-bowl-food text-2xl text-orange-500"></i>
+                            <span class="text-[12px] text-gray-500 tracking-tighter">Perfect for any occasion!</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fa-regular fa-star text-2xl text-orange-500"></i>
+                            <span class="text-[12px] text-gray-500 tracking-tighter">Highly Rated!</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fa-solid fa-truck-fast text-2xl text-orange-500"></i>
+                            <span class="text-[12px] text-gray-500 tracking-tighter">Fast and Fresh Delivery!</span>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="combo-cart-icon absolute -top-10 -right-6 lg:hidden text-2xl text-orange-500 cursor-pointer">
-                <i class="fa-solid fa-cart-arrow-down"></i>
-            </div>
-            <img src="images/dough.png" alt="" class="w-42 h-42 md:w-84 md:h-84 object-cover">
-    </div>
-    <div class="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6">
-        <section>
+                <img src="images/dough.png" alt="" class="w-42 h-42 md:w-84 md:h-84 object-cover">
+        </div>
+        <button
+            id="cart-icon"
+            class="lg:hidden fixed bottom-6 right-6 z-40 bg-orange-500 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center">
+            <i class="fa-solid fa-cart-shopping text-xl"></i>
+        </button>
+    </header>
+    <section class="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6">
+        <div>
             <div class="border border-orange-200 rounded-3xl bg-transparent shadow-md p-4 mt-8">
                 <span class="block text-lg font-[Inter] m-2 font-bold capitalize">Choose your items</span>
                 <div class="flex items-center gap-2">
@@ -69,12 +73,18 @@
                     </div>
                 </div>
             </div>
-        </section>
-        <aside class="md:hidden lg:block">
-            <div class="combo-cart w-full rounded-2xl border border-orange-200 bg-white p-4 shadow-md">
+        </div>
+        <aside id="combo-cart" class="lg:block fixed top-0 right-0 w-80 bg-white rounded-l-3xl lg:rounded-3xl p-4 shadow-2xl z-50
+           translate-x-full transition-transform duration-300 lg:static lg:h-auto lg:w-auto lg:translate-x-0">
+            <div class="">
                 <div class="flex items-center gap-2 mb-4">
                     <i class="fa-solid fa-box text-xl text-orange-500"></i>
                     <h2 class="text-lg font-bold">Your Combo Cart</h2>
+                    <button
+                        id="close-cart"
+                        class="lg:hidden fixed top-4 right-4 text-xl">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
                 </div>
                 <div  id="combo-cart-item" class="space-y-3">
                 </div>
@@ -85,13 +95,14 @@
                     </div>
                     <div class="flex justify-between text-sm">
                         <span>Delivery Fee</span>
-                        <span id="delivery-fee">&#8358;500</span>
+                        <span id="delivery-fee">&#8358;0</span>
                     </div>
-                    <div class="flex justify-between text-lg font-bold pt-2">
+                    <div class="flex justify-between text-lg font-bold border-t mt-5 pt-4 space-y-2">
                         <span>Total</span>
                         <span id="total" class="text-orange-500">&#8358;0</span>
                     </div>
                     <button
+                        id="add-combo-to-cart"
                         class="w-full mt-4 bg-orange-500 text-white py-3 rounded-xl font-semibold hover:bg-orange-600 transition">
                         <i class="fa-solid fa-cart-arrow-down mr-2"></i>
                         Add Combo to Cart
@@ -103,7 +114,7 @@
                 </div>
             </div>
         </aside>
-    </div>
+    </section>
 </body>
 <script type="module" src="scripts/combo.js"></script>
 <script type="module" src="scripts/cartcombo.js"></script>

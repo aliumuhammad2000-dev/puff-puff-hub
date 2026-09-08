@@ -1,22 +1,15 @@
 const menuBar = document.querySelector("#menu-bar");
 const navBar = document.querySelector("#nav-bar1");
 const closeBtn = document.querySelectorAll(".close-btn");
-const cartButton = document.querySelector("#cart-button");
-const cart = document.querySelector("#cart");
 const menuLink = document.querySelector("#menu-link");
 const dropdown = document.querySelector("#dropdown");
 const arrow = document.querySelector("#arrow");
-const cartOrderBtn = document.getElementById('cart-order-now-btn')
 
-menuBar.addEventListener("click", () => {
+menuBar?.addEventListener("click", () => {
     navBar.classList.remove("translate-x-full");
 });
 
-cartButton.addEventListener("click", () => {
-    cart.classList.remove("translate-x-full");
-});
-
-menuLink.addEventListener("click", () => {
+menuLink?.addEventListener("click", () => {
     arrow.classList.add("rotate-180");
 
     if (dropdown.classList.contains("max-h-0")) {
@@ -28,13 +21,9 @@ menuLink.addEventListener("click", () => {
     }
 });
 
-cartOrderBtn.addEventListener("click", () => {
-    window.location.href = 'combo.html';
-})
-
 closeBtn.forEach((btn) => {
     btn.addEventListener("click", () => {
         navBar.classList.add("translate-x-full");
-        cart.classList.add("translate-x-full");
     })
 });
+

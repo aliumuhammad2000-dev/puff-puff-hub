@@ -26,3 +26,5 @@ Thumbs.db
 
 # Cache
 .cache/
+data/carts.json
+data/orders.json

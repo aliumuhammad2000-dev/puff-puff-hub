@@ -1,5 +1,5 @@
 import { products } from "../data/products.js";
-import { updateCartCombo } from "./cartcombo.js";
+import { loadCart, updateCartCombo } from "./cartcombo.js";
 
 
 const goBackBtn = document.getElementById("go-back-btn");
@@ -9,7 +9,7 @@ goBackBtn.addEventListener("click", () => {
 
 const productsContainer = document.getElementById("products-container");
 
-renderProducts(products);
+loadCart().then(() => renderProducts(products));
 
 function renderProducts(productsToRender) {
     productsContainer.innerHTML = "";
@@ -57,7 +57,6 @@ document.querySelectorAll('.filter-btn').forEach(button => {
             renderProducts(filteredProducts);
         }
     })
-    updateQuantity();
 })
 
 

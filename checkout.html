@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | Alhaja Puff-Puff Hub</title>
+    <link href="./output.css" rel="stylesheet">
+</head>
+<body class="min-h-screen bg-amber-50 p-4 sm:p-8">
+    <main class="mx-auto max-w-5xl">
+        <a href="combo.html" class="inline-block rounded-lg bg-orange-500 px-4 py-2 font-medium text-white hover:bg-orange-600">← Back to combo</a>
+        <h1 class="mt-8 text-4xl font-bold text-orange-900">Checkout</h1>
+        <p class="mt-2 text-gray-600">Delivery is currently available within Oyingbo and Ebute Metta.</p>
+        <div id="checkout-message" class="mt-4 hidden rounded-lg p-4"></div>
+        <div class="mt-8 grid gap-8 lg:grid-cols-[1fr_0.8fr]">
+            <form id="checkout-form" class="rounded-2xl bg-white p-6 shadow-md">
+                <h2 class="text-xl font-bold">Your details</h2>
+                <label class="mt-4 block text-sm font-medium">Full name<input required name="name" class="mt-1 w-full rounded-lg border p-3"></label>
+                <label class="mt-4 block text-sm font-medium">Email<input required type="email" name="email" class="mt-1 w-full rounded-lg border p-3"></label>
+                <label class="mt-4 block text-sm font-medium">Phone<input required name="phone" class="mt-1 w-full rounded-lg border p-3"></label>
+                <label class="mt-4 block text-sm font-medium">Delivery location<input required name="deliveryLocation" placeholder="e.g. Ebute Metta" class="mt-1 w-full rounded-lg border p-3"></label>
+                <label class="mt-4 block text-sm font-medium">Payment provider<select name="provider" class="mt-1 w-full rounded-lg border p-3"><option value="paystack">Paystack — card, bank, USSD, transfer</option><option value="flutterwave">Flutterwave — card, bank transfer, USSD, OPay</option></select></label>
+                <button class="mt-6 w-full rounded-xl bg-orange-500 py-3 font-semibold text-white hover:bg-orange-600">Continue to payment</button>
+            </form>
+            <aside class="rounded-2xl bg-white p-6 shadow-md"><h2 class="text-xl font-bold">Order summary</h2><div id="checkout-items" class="mt-4 space-y-3"></div><div class="mt-6 space-y-2 border-t pt-4"><div class="flex justify-between"><span>Subtotal</span><span>₦<b id="subtotal">0</b></span></div><div class="flex justify-between"><span>Delivery</span><span>₦<b id="delivery-fee">0</b></span></div><div class="flex justify-between border-t pt-3 text-lg font-bold"><span>Total</span><span class="text-orange-500">₦<b id="total">0</b></span></div></div></aside>
+        </div>
+    </main>
+    <script type="module" src="scripts/checkout.js"></script>
+</body>
+</html>

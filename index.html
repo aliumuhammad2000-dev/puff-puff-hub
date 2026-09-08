@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Puff-Puff hub</title>
     <link href="./output.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   </head>
@@ -45,27 +45,14 @@
                                 </a>
                             </div>
                         </li>
-                        <li class="hover:text-orange-500"><a href="#">About Us</a></li>
-                        <li class="hover:text-orange-500"><a href="#">Contact Us</a></li>
+                        <li class="hover:text-orange-500"><a href="#about">About Us</a></li>
+                        <li class="hover:text-orange-500"><a href="#contact">Contact Us</a></li>
                     </ul>
                 </nav>
                 <div class="gap-4 flex items-center">
                     <button id="menu-bar" class="md:hidden cursor-pointer">
                         <i class="fa-solid fa-bars"></i>
                     </button>
-                    <button id="cart-button" class="text-orange-400 cursor-pointer">
-                        <i class="fa-solid fa-cart-shopping text-2xl hover:text-orange-500 transition-colors duration-300 relative">
-                        <span class="absolute -top-3 -right-2 bg-black text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
-                    </i>
-                    </button>
-                    <div id="cart" class="fixed top-0 right-0 w-full md:w-1/2 h-screen bg-amber-50 shadow-sm p-4 translate-x-full transition-transform duration-500 ease-in-out z-40 rounded-l-sm text-center">
-                        <h2 class="text-2xl font-bold font-[inter] mb-4">Your Cart</h2>
-                        <h1 class="text-2xl text-center font-bold text-gray-900 mb-4">Oops!</h1>
-                        <span class="text-5xl">&#128546;</span>
-                        <p class="text-3xl font-bold font-[poppins] text-gray-900">Your cart is currently empty.</p>
-                        <button id="cart-order-now-btn" class="bg-orange-500 text-white font-medium px-4 py-2 rounded-full hover:bg-orange-600 transition-colors duration-300 cursor-pointer">Order Now</button>
-                        <i class="fa-solid fa-xmark absolute top-4 right-4 cursor-pointer close-btn"></i>
-                    </div>
                 </div>
             </div>
         </div>
@@ -81,14 +68,14 @@
                         <i id="arrow" class="fa-solid fa-angle-down ml-30 transition-transform duration-500"></i>
                     </li>
                     <div id="dropdown" class="max-h-0 overflow-hidden flex flex-col gap-1 bg-transparent pl-4 transition-all duration-500 ease-in-out">
-                        <a href="#" class="hover:bg-orange-300 mt-2 p-1.5 rounded-sm transition-all duration-500 hover:scale-105">Puff-Puff</a>
-                        <a href="#" class="hover:bg-orange-300 p-1.5 rounded-sm transition-all duration-500 hover:scale-105">Buns</a>
-                        <a href="#" class="hover:bg-orange-300 p-1.5 rounded-sm transition-all duration-500 hover:scale-105">Eggrolls</a>
-                        <a href="#" class="hover:bg-orange-300 p-1.5 rounded-sm transition-all duration-500 hover:scale-105">Akara</a>
+                        <a href="#puff-puff" class="hover:bg-orange-300 mt-2 p-1.5 rounded-sm transition-all duration-500 hover:scale-105">Puff-Puff</a>
+                        <a href="#buns" class="hover:bg-orange-300 p-1.5 rounded-sm transition-all duration-500 hover:scale-105">Buns</a>
+                        <a href="#eggroll" class="hover:bg-orange-300 p-1.5 rounded-sm transition-all duration-500 hover:scale-105">Eggrolls</a>
+                        <a href="#akara" class="hover:bg-orange-300 p-1.5 rounded-sm transition-all duration-500 hover:scale-105">Akara</a>
                     </div>
                 </div>
-                <li class="hover:bg-orange-300 p-1.5 rounded-sm transition-all duration-500 hover:scale-105"><a href="#">About</a></li>
-                <li class="hover:bg-orange-300 p-1.5 rounded-sm transition-all duration-500 hover:scale-105"><a href="#">Contact</a></li>
+                <li class="hover:bg-orange-300 p-1.5 rounded-sm transition-all duration-500 hover:scale-105"><a href="#about">About</a></li>
+                <li class="hover:bg-orange-300 p-1.5 rounded-sm transition-all duration-500 hover:scale-105"><a href="#contact">Contact</a></li>
             </ul>
             <i class="fa-solid fa-xmark absolute top-4 right-4 cursor-pointer close-btn"></i>
         </nav>
@@ -174,7 +161,7 @@
         </div>
     </section>
     <!-- Our Menu-->
-     <section>
+     <section id="our-menu">
         <div class="flex items-center justify-center gap-3 p-4">
             <div class="w-12 h-1 bg-orange-500 rounded"></div>
                 <h2 class="text-center text-2xl font-bold font-[inter] text-gray-900">
@@ -184,19 +171,19 @@
         </div>
         <div class="bg-amber-50 h-auto w-full p-10">
             <div class="flex flex-col md:flex-row items-center justify-around gap-8">
-                <div class="">
+                <div id="puff-puff" class="">
                     <img src="images/puff-puff1.png" alt="Puff-Puff Image" class="w-32 h-32 object-cover rounded-full border-4 border-orange-500 shadow-md">
                     <h3 class="text-center text-lg font-bold font-[inter] text-gray-900 mt-2">Puff-Puff</h3>
                 </div>
-                <div class="">
+                <div id="eggroll" class="">
                     <img src="images/eggroll.png" alt="Egg Roll Image" class="w-32 h-32 object-cover rounded-full border-4 border-orange-500 shadow-md">
                     <h3 class="text-center text-lg font-bold font-[inter] text-gray-900 mt-2">Egg Roll</h3>
                 </div>
-                <div class="">
+                <div id="buns" class="">
                     <img src="images/buns.png" alt="Buns Image" class="w-32 h-32 object-cover rounded-full border-4 border-orange-500 shadow-md">
                     <h3 class="text-center text-lg font-bold font-[inter] text-gray-900 mt-2">Buns</h3>
                 </div>
-                <div class="">
+                <div id="akara" class="">
                     <img src="images/akara.png" alt="Akara Image" class="w-32 h-32 object-cover rounded-full border-4 border-orange-500 shadow-md">
                     <h3 class="text-center text-lg font-bold font-[inter] text-gray-900 mt-2">Akara</h3>
                 </div>
@@ -204,7 +191,7 @@
         </div>
      </section>
     <!-- About us -->
-    <section>
+    <section id="about">
         <div class="flex items-center justify-center gap-3 p-4">
             <div class="w-12 h-1 bg-orange-500 rounded"></div>
                 <h2 class="text-center text-2xl font-bold font-[inter] text-gray-900">
@@ -224,7 +211,7 @@
         </div>
     </section>
     <!-- Contact -->
-    <section>
+    <section id="contact">
         <div class="flex items-center justify-center gap-3 p-4">
             <div class="w-12 h-1 bg-orange-500 rounded"></div>
                 <h2 class="text-center text-2xl font-bold font-[inter] text-gray-900">
@@ -235,7 +222,7 @@
         <div class="flex flex-col md:flex-row items-center justify-center gap-10 p-8">
             <div class="md:w-1/3 bg-amber-50 p-6 rounded-lg shadow-md">
                 <span class="text-sm bg-orange-500 rounded-lg text-white px-4 py-2 font-bold">Get in Touch</span>
-                <p class="text-md font-[poppins] text-amber-900 mt-4">We'd love to hear from you! Whether you have questions about our menu, want to provide feedback, or just want to say hello, feel free to reach out to us. You can contact us via email at <a href="mailto:info@puffpuffhub.com" class="text-orange-500 hover:underline">info@puffpuffhub.com</a></p>
+                <p class="text-md font-[poppins] text-amber-900 mt-4">We'd love to hear from you! Whether you have questions about our menu, want to provide feedback, or just want to say hello, feel free to reach out to us. You can contact us via email at <a href="mailto:info@puffpuffhub.com" class="text-orange-500 hover:underline">info@puffpuffhub.com</a> or <a href="https://wa.me/2348000000000" class="text-green-600 hover:underline">WhatsApp</a>.</p>
             </div>
         </div>
     </section>

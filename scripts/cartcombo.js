@@ -1,9 +1,31 @@
 import { products } from "../data/products.js";
 
 const cartCombo = [];
+const cartId = localStorage.getItem("puffPuffCartId") || crypto.randomUUID();
+localStorage.setItem("puffPuffCartId", cartId);
+
+export async function loadCart() {
+    const response = await fetch(`/api/cart/${cartId}`);
+    if (!response.ok) throw new Error("Unable to load cart");
+    cartCombo.splice(0, cartCombo.length, ...(await response.json()));
+    cartCombo.forEach(item => {
+        const product = products.find(product => product.id === item.id);
+        if (product) product.quantity = item.quantity;
+    });
+    rendercartCombo();
+    renderTotal();
+}
+
+async function persistCart() {
+    await fetch(`/api/cart/${cartId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ items: cartCombo })
+    });
+}
 
 
-export function updateCartCombo(id, quantity) {
+export async function updateCartCombo(id, quantity) {
     const existingItem = cartCombo.find(item => item.id === id);
     if (quantity === 0) {
         const index = cartCombo.findIndex(item => item.id === id);
@@ -19,6 +41,9 @@ export function updateCartCombo(id, quantity) {
             ...product, quantity
         });
     }
+    const product = products.find(product => product.id === id);
+    if (product) product.quantity = quantity;
+    await persistCart();
     rendercartCombo();
     renderTotal();
 }
@@ -76,6 +101,7 @@ function rendercartCombo() {
             if (quantityElement) {
                 quantityElement.textContent = 0;
             }
+            persistCart();
             rendercartCombo();
             renderTotal();
             });
@@ -87,7 +113,7 @@ function renderTotal() {
         return total + (item.price * item.quantity);
     }, 0);
 
-    const deliveryFee = subtotal > 0 ? 500 : 0;
+    const deliveryFee = 0;
     const total = subtotal + deliveryFee;
 
     document.getElementById("subtotal").textContent = `${subtotal}`;
@@ -95,7 +121,33 @@ function renderTotal() {
     document.getElementById("total").textContent = `${total}`;
 }
 
+const cartIcon = document.getElementById("cart-icon");
+const comboCart = document.getElementById("combo-cart");
+const closeCart = document.getElementById("close-cart");
+const addToCart = document.getElementById("add-combo-to-cart");
+
+
+cartIcon.addEventListener("click", () => {
+    comboCart.classList.remove("translate-x-full");
+});
+
+closeCart.addEventListener("click", closeComboCart);
+function closeComboCart() {
+    comboCart.classList.add("translate-x-full");
+}
+
+window.addEventListener("scroll", () => {
+    comboCart.classList.add("translate-x-full");
+});
+
+addToCart.addEventListener("click", () => {
+    if (cartCombo.length === 0) {
+        alert("Your combo cart is empty. Please add items to the cart before proceeding.");
+        return;
+    }
+    window.location.href = "checkout.html";
+});
+
 document.addEventListener("DOMContentLoaded", () => {
-    rendercartCombo();
-    renderTotal();
+    if (!document.getElementById("products-container")) loadCart();
 });
