@@ -16,31 +16,40 @@ function renderProducts(productsToRender) {
 
     productsToRender.forEach(product => {
         productsContainer.innerHTML += `
-        <div class="bg-white rounded-2xl p-3 sm:p-4 flex flex-col items-center shadow-sm">
-            <img src="${product.image}" alt="${product.name}"
-                class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 object-contain rounded-full">
-            <h5 class="text-sm sm:text-base md:text-lg font-semibold mt-2">
-                ${product.name}
-            </h5>
-            <span class="text-xs sm:text-sm md:text-base font-bold">
-                &#8358;${product.price}${product.unit ? ` / ${product.unit}` : ""}
-            </span>
-            <div class="flex items-center rounded-lg mt-3 border border-gray-300 overflow-hidden">
+        <article class="group relative flex min-h-[270px] flex-col overflow-hidden rounded-3xl border border-orange-100 bg-white p-3 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-orange-200 hover:shadow-xl sm:p-4">
+            <div class="absolute right-3 top-3 rounded-full bg-orange-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider text-orange-600">
+                ${product.category === "snack" ? "Snack" : "Drink"}
+            </div>
+            <div class="relative flex h-36 items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-amber-50 to-orange-100 transition-transform duration-300 group-hover:scale-[1.03]">
+                <img src="${product.image}" alt="${product.name}"
+                    class="h-full w-full object-cover object-center drop-shadow-md transition-transform duration-500 group-hover:scale-110">
+            </div>
+            <div class="flex flex-1 flex-col pt-3">
+                <h5 class="text-base font-bold text-gray-900 sm:text-lg">
+                    ${product.name}
+                </h5>
+                <span class="mt-1 text-sm font-bold text-orange-600">
+                    &#8358;${product.price}<span class="font-normal text-gray-500">${product.unit ? ` / ${product.unit}` : ""}</span>
+                </span>
+            </div>
+            <div class="mt-3 flex items-center justify-between rounded-xl border border-orange-100 bg-orange-50/60 p-1">
                 <button
-                    class="decrease w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center border-r border-gray-300 text-orange-500 hover:bg-orange-500 hover:text-white transition" data-id="${product.id}">
+                    type="button" aria-label="Decrease ${product.name} quantity"
+                    class="decrease flex h-8 w-8 items-center justify-center rounded-lg text-lg font-medium text-orange-600 transition hover:bg-orange-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-orange-300" data-id="${product.id}">
                     -
                 </button>
 
-                <span class="quantity w-10 sm:w-12 h-7 sm:h-8 flex items-center justify-center font-semibold text-sm" data-id="${product.id}">
+                <span class="quantity min-w-10 text-center text-sm font-bold text-gray-800" data-id="${product.id}">
                     ${product.quantity || 0}
                 </span>
 
                 <button
-                    class="increase w-7 h-7 sm:w-8 sm:h-8 flex items-center justify-center border-l border-gray-300 text-orange-500 hover:bg-orange-500 hover:text-white transition" data-id="${product.id}">
+                    type="button" aria-label="Increase ${product.name} quantity"
+                    class="increase flex h-8 w-8 items-center justify-center rounded-lg border border-orange-500 bg-transparent text-lg font-medium text-orange-500 shadow-sm transition hover:bg-orange-500 hover:text-white active:bg-white active:text-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-300" data-id="${product.id}">
                     +
                 </button>
             </div>
-        </div>
+        </article>
         `;
     });
     updateQuantity();

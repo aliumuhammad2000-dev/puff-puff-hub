@@ -9,8 +9,11 @@
 </head>
 <body class="bg-linear-to-r from-0% to-100% from-amber-50 via-orange-50 to-amber-100 p-8">
     <header>
-        <button id="go-back-btn" class="bg-orange-500 text-white font-medium px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors duration-300 cursor-pointer">
-            <i class="fa-solid fa-arrow-left"></i> Go Back Home
+        <button id="go-back-btn" aria-label="Go back home" class="group inline-flex items-center gap-3 rounded-full border border-orange-200 bg-white/90 px-3 py-2.5 font-semibold text-orange-700 shadow-sm backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:border-orange-300 hover:bg-orange-500 hover:text-white hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-orange-200 cursor-pointer">
+            <span class="flex h-9 w-9 items-center justify-center rounded-full bg-orange-100 text-orange-600 transition-all duration-300 group-hover:bg-white group-hover:text-orange-500">
+                <i class="fa-solid fa-arrow-left transition-transform duration-300 group-hover:-translate-x-0.5"></i>
+            </span>
+            <span class="pr-2">Back to Home</span>
         </button>
         <span class="block text-sm font-pacifico text-orange-500 m-2 pl-8 font-bold">Special Order</span>
         <div class="relative flex items-center justify-around">
@@ -74,8 +77,8 @@
                 </div>
             </div>
         </div>
-        <aside id="combo-cart" class="lg:block fixed top-0 right-0 w-80 bg-white rounded-l-3xl lg:rounded-3xl p-4 shadow-2xl z-50
-           translate-x-full transition-transform duration-300 lg:static lg:h-auto lg:w-auto lg:translate-x-0">
+        <aside id="combo-cart" class="lg:block fixed top-0 right-0 h-fit max-h-[calc(100vh-2rem)] w-80 overflow-y-auto bg-white rounded-l-3xl lg:rounded-3xl p-4 shadow-2xl z-50 self-start
+           translate-x-full transition-transform duration-300 lg:static lg:max-h-none lg:w-auto lg:overflow-visible lg:translate-x-0">
             <div class="">
                 <div class="flex items-center gap-2 mb-4">
                     <i class="fa-solid fa-box text-xl text-orange-500"></i>
