@@ -153,17 +153,73 @@ async function handleApi(request, response, url) {
     sendJson(response, 404, { error: "Not found" });
 }
 
-const mime = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".png": "image/png", ".json": "application/json" };
+const mime = { ".html": "text/html", ".js": "text/javascript", ".css": "text/css", ".png": "image/png" };
+
+// Keep the static surface explicit. Files such as server.js, .env, package files,
+// Git metadata, and customer/order storage are intentionally absent from this list.
+const publicFiles = new Map([
+    "index.html",
+    "combo.html",
+    "checkout.html",
+    "output.css",
+    "data/products.js",
+    "data/herodata.js",
+    "scripts/header.js",
+    "scripts/hero.js",
+    "scripts/combo.js",
+    "scripts/cartcombo.js",
+    "scripts/checkout.js",
+    "images/7up.png",
+    "images/akara.png",
+    "images/american-cola.png",
+    "images/bigicola.png",
+    "images/buns.png",
+    "images/cocacola.png",
+    "images/dough.png",
+    "images/eggroll.png",
+    "images/fanta.png",
+    "images/maltina.png",
+    "images/puff-puff1.png"
+].map(relativePath => [`/${relativePath}`, path.join(root, relativePath)]));
+
+function getPublicFile(requestPath) {
+    let decodedPath;
+    try { decodedPath = decodeURIComponent(requestPath); }
+    catch { return null; }
+
+    if (decodedPath.includes("\0") || decodedPath.includes("\\")) return null;
+    if (decodedPath.split("/").some(segment => segment === "." || segment === "..")) return null;
+
+    const normalizedPath = decodedPath === "/" ? "/index.html" : decodedPath;
+    return publicFiles.get(normalizedPath) || null;
+}
+
+function isSafeRawRequestPath(rawRequestUrl) {
+    const rawPath = String(rawRequestUrl || "").split("?", 1)[0];
+    if (!rawPath.startsWith("/")) return false;
+
+    let decodedPath;
+    try { decodedPath = decodeURIComponent(rawPath); }
+    catch { return false; }
+
+    if (rawPath.includes("\\") || rawPath.includes("\0")) return false;
+    if (decodedPath.includes("\\") || decodedPath.includes("\0")) return false;
+    return !decodedPath.split("/").some(segment => segment === "." || segment === "..");
+}
+
 const server = http.createServer(async (request, response) => {
+    if (!isSafeRawRequestPath(request.url)) {
+        response.writeHead(404); response.end("Not found"); return;
+    }
+
     const url = new URL(request.url, `http://${request.headers.host || "localhost"}`);
     if (url.pathname.startsWith("/api/")) {
         try { await handleApi(request, response, url); }
         catch (error) { sendJson(response, 500, { error: error.message }); }
         return;
     }
-    const requested = url.pathname === "/" ? "/index.html" : url.pathname;
-    const file = path.resolve(root, `.${requested}`);
-    if (!file.startsWith(root) || !fs.existsSync(file) || fs.statSync(file).isDirectory()) {
+    const file = getPublicFile(url.pathname);
+    if (!file || !fs.existsSync(file) || fs.statSync(file).isDirectory()) {
         response.writeHead(404); response.end("Not found"); return;
     }
     response.writeHead(200, { "Content-Type": mime[path.extname(file)] || "application/octet-stream" });
