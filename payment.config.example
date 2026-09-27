@@ -1,3 +1,5 @@
 PORT=5501
+PUBLIC_BASE_URL=https://your-domain.example
 PAYSTACK_SECRET_KEY=sk_test_replace_me
 FLW_SECRET_KEY=FLWSECK_TEST-replace_me
+FLW_SECRET_HASH=replace_with_flutterwave_webhook_secret_hash
