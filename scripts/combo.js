@@ -1,4 +1,4 @@
-import { products } from "../data/products.js";
+import { loadProducts, products } from "../data/products.js";
 import { loadCart, updateCartCombo } from "./cartcombo.js";
 
 
@@ -9,7 +9,9 @@ goBackBtn.addEventListener("click", () => {
 
 const productsContainer = document.getElementById("products-container");
 
-loadCart().then(() => renderProducts(products));
+loadProducts()
+    .then(() => loadCart())
+    .then(() => renderProducts(products));
 
 function renderProducts(productsToRender) {
     productsContainer.innerHTML = "";

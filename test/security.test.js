@@ -1,5 +1,7 @@
 const assert = require("node:assert/strict");
+const fs = require("node:fs");
 const http = require("node:http");
+const os = require("node:os");
 const path = require("node:path");
 const { once } = require("node:events");
 const { after, before, describe, it } = require("node:test");
@@ -8,6 +10,7 @@ const { spawn } = require("node:child_process");
 const root = path.resolve(__dirname, "..");
 let child;
 let port;
+let tempDir;
 
 function request(rawPath, options = {}) {
     return new Promise((resolve, reject) => {
@@ -27,15 +30,19 @@ function request(rawPath, options = {}) {
 
 before(async () => {
     port = 5600 + Math.floor(Math.random() * 200);
+    tempDir = fs.mkdtempSync(path.join(os.tmpdir(), "puff-puff-hub-security-"));
     child = spawn(process.execPath, ["server.js"], {
         cwd: root,
-        env: { ...process.env, PORT: String(port) },
+        env: { ...process.env, PORT: String(port), DATA_DIR: tempDir },
         stdio: ["ignore", "pipe", "pipe"]
     });
     await once(child.stdout, "data");
 });
 
-after(() => child.kill());
+after(() => {
+    child.kill();
+    fs.rmSync(tempDir, { recursive: true, force: true });
+});
 
 describe("secure static file serving", () => {
     it("serves the website's allowlisted assets", async () => {
@@ -61,6 +68,7 @@ describe("secure static file serving", () => {
             "/server.js",
             "/package.json",
             "/.env",
+            "/data/products.json",
             "/data/orders.json",
             "/data/carts.json",
             "/.git/config"
