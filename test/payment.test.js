@@ -500,4 +500,51 @@ describe("payment verification", () => {
         assert.equal(result.status, 502);
         assert.equal(JSON.parse(result.body.toString()).paymentStatus, "pending");
     });
+
+    it("returns only an authorized receipt with trusted order data", async () => {
+        const order = await createOrder("paystack");
+        const checkoutPage = await request(appPort, "/checkout.html");
+        assert.equal(checkoutPage.headers["cache-control"], "no-store");
+        assert.equal(checkoutPage.headers["referrer-policy"], "no-referrer");
+        const authorized = await request(appPort, `/api/orders/${order.id}/receipt`, {
+            headers: { Authorization: `Bearer ${order.callbackToken}` }
+        });
+        assert.equal(authorized.status, 200);
+        assert.equal(authorized.headers["cache-control"], "no-store");
+        assert.equal(authorized.headers["referrer-policy"], "no-referrer");
+        const receipt = JSON.parse(authorized.body.toString());
+        assert.deepEqual(Object.keys(receipt).sort(), ["createdAt", "deliveryFee", "items", "orderId", "paymentStatus", "provider", "subtotal", "total"].sort());
+        assert.equal(receipt.orderId, order.id);
+        assert.deepEqual(receipt.items, [{ name: "Maltina", quantity: 2, price: 600 }]);
+        assert.equal(receipt.subtotal, 1200);
+        assert.equal(receipt.deliveryFee, 500);
+        assert.equal(receipt.total, 1700);
+        assert.equal(receipt.paymentStatus, "pending");
+        assert.equal("customer" in receipt, false);
+        assert.equal("callbackToken" in receipt, false);
+        assert.equal("payment" in receipt, false);
+
+        const missing = await request(appPort, `/api/orders/${order.id}/receipt`);
+        const invalid = await request(appPort, `/api/orders/${order.id}/receipt`, { headers: { Authorization: "Bearer invalid" } });
+        assert.equal(missing.status, 404);
+        assert.equal(invalid.status, 404);
+        assert.deepEqual(JSON.parse(missing.body.toString()), JSON.parse(invalid.body.toString()));
+    });
+
+    it("returns persisted receipt status for paid, failed, and mock orders", async () => {
+        const paid = await createOrder("paystack");
+        const ordersFile = path.join(tempDir, "orders.json");
+        const orders = JSON.parse(fs.readFileSync(ordersFile, "utf8"));
+        orders[paid.id].paymentStatus = "paid";
+        orders[paid.id].paymentVerification = { providerStatus: "success" };
+        orders["failed-receipt"] = { id: "failed-receipt", callbackToken: "failed-token", createdAt: "2026-01-01T00:00:00.000Z", items: paid.items, subtotal: paid.subtotal, deliveryFee: paid.deliveryFee, total: paid.total, provider: "flutterwave", paymentStatus: "failed" };
+        orders["mock-receipt"] = { id: "mock-receipt", callbackToken: "mock-receipt-token", createdAt: "2026-01-01T00:00:00.000Z", items: paid.items, subtotal: paid.subtotal, deliveryFee: paid.deliveryFee, total: paid.total, provider: "paystack", paymentStatus: "pending", payment: { mock: true } };
+        fs.writeFileSync(ordersFile, JSON.stringify(orders));
+
+        for (const [id, token, status] of [[paid.id, paid.callbackToken, "paid"], ["failed-receipt", "failed-token", "failed"], ["mock-receipt", "mock-receipt-token", "pending"]]) {
+            const result = await request(appPort, `/api/orders/${id}/receipt`, { headers: { Authorization: `Bearer ${token}` } });
+            assert.equal(result.status, 200);
+            assert.equal(JSON.parse(result.body.toString()).paymentStatus, status);
+        }
+    });
 });
