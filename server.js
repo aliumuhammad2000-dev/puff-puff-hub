@@ -4,13 +4,19 @@ const path = require("node:path");
 const crypto = require("node:crypto");
 
 const root = __dirname;
-const dataDir = path.join(root, "data");
+const dataDir = process.env.DATA_DIR ? path.resolve(process.env.DATA_DIR) : path.join(root, "data");
+const catalogFile = path.join(root, "data", "products.json");
 const cartsFile = path.join(dataDir, "carts.json");
 const ordersFile = path.join(dataDir, "orders.json");
 const port = Number(process.env.PORT || 5501);
 const DELIVERY_FEE = 500;
+const MAX_QUANTITY = 1000;
+
+const productCatalog = JSON.parse(fs.readFileSync(catalogFile, "utf8"));
+const productsById = new Map(productCatalog.map(product => [product.id, product]));
 
 function ensureStore(file) {
+    fs.mkdirSync(path.dirname(file), { recursive: true });
     if (!fs.existsSync(file)) fs.writeFileSync(file, "{}\n");
 }
 
@@ -24,6 +30,65 @@ function readStore(file) {
 
 function writeStore(file, value) {
     fs.writeFileSync(file, JSON.stringify(value, null, 2) + "\n");
+}
+
+function validateCartItem(item) {
+    if (!item || typeof item.id !== "string") return null;
+
+    const product = productsById.get(item.id);
+    const quantity = item.quantity;
+    if (!product || !Number.isSafeInteger(quantity) || quantity < 0 || quantity > MAX_QUANTITY) return null;
+    if (product.category === "snack" && quantity % 2 !== 0) return null;
+
+    return { id: product.id, quantity };
+}
+
+function validateSubmittedCart(items) {
+    if (!Array.isArray(items)) return { error: "Cart items must be an array." };
+
+    const seen = new Set();
+    const selections = [];
+    for (const item of items) {
+        if (item?.id && seen.has(item.id)) return { error: `Duplicate product ID: ${item.id}.` };
+
+        const selection = validateCartItem(item);
+        if (!selection) return { error: "Each cart item must have a valid product ID and quantity." };
+        seen.add(selection.id);
+        if (selection.quantity > 0) selections.push(selection);
+    }
+
+    return { selections };
+}
+
+function canonicalizeStoredCart(items) {
+    if (!Array.isArray(items)) return [];
+
+    const seen = new Set();
+    const selections = [];
+    for (const item of items) {
+        const selection = validateCartItem(item);
+        if (!selection || seen.has(selection.id) || selection.quantity === 0) continue;
+        seen.add(selection.id);
+        selections.push(selection);
+    }
+    return selections;
+}
+
+function hydrateCart(selections) {
+    return selections.map(selection => ({
+        ...productsById.get(selection.id),
+        quantity: selection.quantity
+    }));
+}
+
+function readCanonicalCart(carts, cartId) {
+    const stored = carts[cartId] || [];
+    const selections = canonicalizeStoredCart(stored);
+    if (JSON.stringify(stored) !== JSON.stringify(selections)) {
+        carts[cartId] = selections;
+        writeStore(cartsFile, carts);
+    }
+    return selections;
 }
 
 function sendJson(res, status, payload) {
@@ -100,23 +165,32 @@ async function initializePayment(provider, order, origin) {
 async function handleApi(request, response, url) {
     const parts = url.pathname.split("/").filter(Boolean);
 
+    if (request.method === "GET" && parts[1] === "products" && parts.length === 2) {
+        return sendJson(response, 200, productCatalog);
+    }
+
     if (request.method === "GET" && parts[1] === "cart" && parts[2]) {
         const carts = readStore(cartsFile);
-        return sendJson(response, 200, carts[parts[2]] || []);
+        const selections = readCanonicalCart(carts, parts[2]);
+        return sendJson(response, 200, hydrateCart(selections));
     }
 
     if (request.method === "PUT" && parts[1] === "cart" && parts[2]) {
         const input = await body(request);
+        const validated = validateSubmittedCart(input.items);
+        if (validated.error) return sendJson(response, 400, { error: validated.error });
+
         const carts = readStore(cartsFile);
-        carts[parts[2]] = Array.isArray(input.items) ? input.items : [];
+        carts[parts[2]] = validated.selections;
         writeStore(cartsFile, carts);
-        return sendJson(response, 200, carts[parts[2]]);
+        return sendJson(response, 200, hydrateCart(validated.selections));
     }
 
     if (request.method === "POST" && parts[1] === "checkout") {
         const input = await body(request);
         const carts = readStore(cartsFile);
-        const items = carts[input.cartId] || [];
+        const selections = readCanonicalCart(carts, input.cartId);
+        const items = hydrateCart(selections);
         if (!items.length) return sendJson(response, 400, { error: "Your cart is empty." });
         if (!input.customer?.email || !input.customer?.name || !input.customer?.phone) {
             return sendJson(response, 400, { error: "Name, email, and phone are required." });
