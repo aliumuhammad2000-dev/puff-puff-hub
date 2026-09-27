@@ -11,10 +11,24 @@ function showMessage(text, error = false, pending = false) {
 function render(itemsToRender, deliveryFee = 0) {
     items = itemsToRender;
     const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    document.getElementById("checkout-items").innerHTML = items.map(item => `<div class="flex justify-between gap-4"><span>${item.name} × ${item.quantity}</span><span>₦${item.price * item.quantity}</span></div>`).join("");
+    renderItems(items);
     document.getElementById("subtotal").textContent = subtotal;
     document.getElementById("delivery-fee").textContent = deliveryFee;
     document.getElementById("total").textContent = subtotal + deliveryFee;
+}
+
+function renderItems(itemsToRender) {
+    const container = document.getElementById("checkout-items");
+    container.replaceChildren(...itemsToRender.map(item => {
+        const row = document.createElement("div");
+        row.className = "flex justify-between gap-4";
+        const description = document.createElement("span");
+        description.textContent = `${item.name} × ${item.quantity}`;
+        const price = document.createElement("span");
+        price.textContent = `₦${item.price * item.quantity}`;
+        row.append(description, price);
+        return row;
+    }));
 }
 
 async function load() {
@@ -36,33 +50,71 @@ function disableCheckoutForm() {
     form.querySelectorAll("input, button, select, textarea").forEach(control => { control.disabled = true; });
 }
 
+function returnStateKey(orderId) {
+    return `puffPuffReturn:${orderId}`;
+}
+
+function readReturnState(orderId) {
+    try { return JSON.parse(sessionStorage.getItem(returnStateKey(orderId)) || "{}"); }
+    catch { return {}; }
+}
+
 async function verifyPaymentReturn() {
     const params = new URLSearchParams(window.location.search);
     const token = params.get("token");
-    if (!token) return showMessage("We could not securely verify this payment return.", true);
+    const orderId = params.get("order");
+    const storedState = readReturnState(orderId);
+    const legacyToken = orderId ? sessionStorage.getItem(`puffPuffReceiptToken:${orderId}`) : null;
+    const storedToken = token || storedState.token || legacyToken;
+    if (!orderId || !storedToken) return showMessage("We could not securely verify this payment return.", true);
+
+    const transactionId = params.get("transaction_id") || params.get("transactionId") || storedState.transactionId || null;
+    const reference = params.get("reference") || params.get("tx_ref") || storedState.reference || null;
+    sessionStorage.setItem(returnStateKey(orderId), JSON.stringify({ token: storedToken, transactionId, reference }));
+    if (token) window.history.replaceState({}, document.title, `checkout.html?order=${encodeURIComponent(orderId)}`);
 
     showMessage("Verifying your payment with the payment provider...", false, true);
-    const query = new URLSearchParams({ order: params.get("order"), token });
-    ["reference", "tx_ref", "transaction_id", "transactionId"].forEach(name => {
-        if (params.get(name)) query.set(name, params.get(name));
-    });
+    const query = new URLSearchParams({ order: orderId, token: storedToken });
+    if (reference) query.set("reference", reference);
+    if (transactionId) query.set("transaction_id", transactionId);
+
+    let verificationUnavailable = false;
+    try {
+        const verificationResponse = await fetch(`/api/payment/verify?${query}`);
+        verificationUnavailable = verificationResponse.status === 502;
+    }
+    catch { verificationUnavailable = true; }
 
     try {
-        const response = await fetch(`/api/payment/verify?${query}`);
-        const result = await response.json();
-        if (!response.ok) {
-            return showMessage(result.error || "We could not verify your payment yet. The order remains pending.", true);
+        const receiptResponse = await fetch(`/api/orders/${encodeURIComponent(orderId)}/receipt`, {
+            headers: { Authorization: `Bearer ${storedToken}` }
+        });
+        if (!receiptResponse.ok) throw new Error("Receipt unavailable");
+        const receipt = await receiptResponse.json();
+        renderReceipt(receipt);
+        if (receipt.paymentStatus === "paid") {
+            return showMessage(`Payment verified successfully. Order ${receipt.orderId} is confirmed.`);
         }
-        if (result.paymentStatus === "paid") {
-            return showMessage("Payment verified successfully. Your order is confirmed.");
+        if (receipt.paymentStatus === "failed") {
+            return showMessage(`Payment verification failed for order ${receipt.orderId}. Please contact us if you were charged.`, true);
         }
-        if (result.paymentStatus === "failed") {
-            return showMessage("Payment verification failed. Please try payment again.", true);
+        if (receipt.provider === "flutterwave" && !transactionId) {
+            return showMessage(`Order ${receipt.orderId} is still pending. Flutterwave did not return a transaction ID, so payment cannot be independently verified yet.`, false, true);
         }
-        showMessage("Payment is still pending. We have not confirmed the order yet.", false, true);
+        if (verificationUnavailable) {
+            return showMessage(`Order ${receipt.orderId} is still pending. Payment verification is temporarily unavailable; please try again later.`, false, true);
+        }
+        showMessage(`Order ${receipt.orderId} is still pending. We have not confirmed payment yet.`, false, true);
     } catch {
-        showMessage("We could not reach the payment verification service. Your order remains pending.", true);
+        showMessage("We could not load your authorized receipt. Your order remains unchanged.", true);
     }
+}
+
+function renderReceipt(receipt) {
+    renderItems(receipt.items || []);
+    document.getElementById("subtotal").textContent = receipt.subtotal;
+    document.getElementById("delivery-fee").textContent = receipt.deliveryFee;
+    document.getElementById("total").textContent = receipt.total;
 }
 
 form.addEventListener("submit", async event => {

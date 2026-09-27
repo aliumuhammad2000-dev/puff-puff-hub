@@ -125,8 +125,13 @@ function readCanonicalCart(carts, cartId) {
     return selections;
 }
 
-function sendJson(res, status, payload) {
-    res.writeHead(status, { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" });
+function sendJson(res, status, payload, headers = {}) {
+    res.writeHead(status, {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "no-store",
+        ...headers
+    });
     res.end(JSON.stringify(payload));
 }
 
@@ -310,6 +315,23 @@ function minimalPaymentStatus(order) {
     };
 }
 
+function receiptData(order) {
+    return {
+        orderId: order.id,
+        createdAt: order.createdAt,
+        items: (Array.isArray(order.items) ? order.items : []).map(item => ({
+            name: String(item.name || "Product"),
+            quantity: item.quantity,
+            price: item.price
+        })),
+        subtotal: order.subtotal,
+        deliveryFee: order.deliveryFee,
+        total: order.total,
+        provider: order.provider,
+        paymentStatus: order.paymentStatus
+    };
+}
+
 function callbackUrl(order, origin, provider) {
     const hasCredentials = provider === "paystack" ? Boolean(process.env.PAYSTACK_SECRET_KEY) : Boolean(process.env.FLW_SECRET_KEY);
     const configuredBase = process.env.PUBLIC_BASE_URL;
@@ -377,6 +399,17 @@ function checkoutResponse(order, payment = {}) {
 
 async function handleApi(request, response, url) {
     const parts = url.pathname.split("/").filter(Boolean);
+
+    if (request.method === "GET" && parts[1] === "orders" && parts[3] === "receipt" && parts.length === 4) {
+        const orderId = parts[2];
+        const authorization = request.headers.authorization;
+        const token = authorization && /^Bearer\s+(.+)$/i.exec(authorization)?.[1];
+        const order = readStore(ordersFile)[orderId];
+        if (!order || !timingSafeEqualText(order.callbackToken, token || "")) {
+            return sendJson(response, 404, { error: "Receipt not found." }, { "Referrer-Policy": "no-referrer" });
+        }
+        return sendJson(response, 200, receiptData(order), { "Referrer-Policy": "no-referrer" });
+    }
 
     if (request.method === "GET" && parts[1] === "payment" && parts[2] === "verify" && parts.length === 3) {
         const orderId = url.searchParams.get("order");
@@ -571,7 +604,12 @@ const server = http.createServer(async (request, response) => {
     if (!file || !fs.existsSync(file) || fs.statSync(file).isDirectory()) {
         response.writeHead(404); response.end("Not found"); return;
     }
-    response.writeHead(200, { "Content-Type": mime[path.extname(file)] || "application/octet-stream" });
+    const headers = { "Content-Type": mime[path.extname(file)] || "application/octet-stream" };
+    if (url.pathname === "/checkout.html") {
+        headers["Referrer-Policy"] = "no-referrer";
+        headers["Cache-Control"] = "no-store";
+    }
+    response.writeHead(200, headers);
     fs.createReadStream(file).pipe(response);
 });
 
